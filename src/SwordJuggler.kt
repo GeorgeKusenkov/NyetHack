@@ -1,3 +1,5 @@
+import java.lang.Exception
+
 class SwordJuggler {
 }
 
@@ -8,15 +10,20 @@ fun main() {
         swordsJuggling = 2
     }
 
-    proficiencyCheck(swordsJuggling)
-    swordsJuggling = swordsJuggling!!.plus(1)
+    try {
+        proficiencyCheck(swordsJuggling)
+        swordsJuggling = swordsJuggling!!.plus(1)
+    } catch (e: Exception) {
+        println(e)
+    }
 
     println("You juggle $swordsJuggling swords!")
 }
 
 fun proficiencyCheck (swordJuggling: Int?) {
-    swordJuggling ?: throw UnskilledSwordJugglerException()
+      checkNotNull(swordJuggling) { "Player cannot juggle swords" }
+//    swordJuggling ?: throw UnskilledSwordJugglerException()
 //    swordJuggling ?: throw IllegalStateException("Player cannot juggle swords")
 }
 
-class UnskilledSwordJugglerException() : IllegalStateException("Player cannot juggle swords")
+class UnskilledSwordJugglerException: IllegalStateException("Player cannot juggle swords")
