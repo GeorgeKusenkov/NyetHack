@@ -1,12 +1,63 @@
 import java.util.*
+import kotlin.math.roundToInt
 
 const val TAVERN_NAME = "Taernyl's Folly"
 
+var playerGold = 10
+var playerSilver = 10
+
+val patronList = listOf("Eli", "Mordoc", "Sophie")
+
 fun main()  {
 
+    if (patronList.contains("Eli")) {
+        println("The tavern master says: Eli's in the back playing cards.")
+    } else {
+        println("The tavern master says: Eli isn't here.")
+    }
+
+    if (patronList.containsAll(listOf("Sophie", "Mordoc"))) {
+        println("The tavern master says: Yea, they're seated by the stew kettle.")
+    } else {
+        println("The tavern master says: Nay, they departed hours ago.")
+    }
+
     placeOrder("shandy,Dragon's Breath,5.91")
-    placeOrder("elixir,Shirley's Temple,4.12")
+//    println(patronList.getOrElse(4) { "Unknown Patron" })
+//    placeOrder("elixir,Shirley's Temple,4.12")
 }
+
+
+
+fun performPurchase(price: Double) {
+    displayBalance()
+    val totalPurse = playerGold + (playerSilver / 100.0)
+    println("Total purse: $totalPurse")
+    println("Purchasing item for $price")
+
+    val  remainingBalance: Double
+
+    if (totalPurse > price) {
+        remainingBalance = totalPurse - price
+        println("Remaining balance: ${"%.2f".format(remainingBalance)}")
+    } else {
+        remainingBalance = totalPurse
+        println("Taernyl say: You have not money for this")
+    }
+
+
+    val remainingGold = remainingBalance.toInt()
+    val remainingSilver = (remainingBalance % 1 * 100).roundToInt()
+    playerGold = remainingGold
+    playerSilver = remainingSilver
+    displayBalance()
+
+}
+
+fun displayBalance() {
+    println("Player's purse balance: Gold: $playerGold, Silver: $playerSilver")
+}
+
 
 private fun toDragonSpeak(phrase: String) =
     phrase.replace(Regex("[AEIOUaeiou]")) {
@@ -32,22 +83,16 @@ private fun placeOrder(menuData: String) {
     val tavernMaster = TAVERN_NAME.substring(0 until indexOfApostrophe)
     println("Madrigal speaks with $tavernMaster about their order.")
 
-//    val data = menuData.split(',')
-//    val type = data[0]
-//    val name = data[1]
-//    val price = data[2]
-
     val (type, name, price) = menuData.split(',')
     val message = "Madrigal buys a $name ($type) for $price"
     println(message)
 
-//    val phrase = "Ah, delicious $name!"
-//    println("Madrigal exclaims: ${toDragonSpeak(phrase)}")
+    performPurchase(price.toDouble())
 
     val phrase = if (name == "Dragon's Breath") {
-        "Madrigal exclaims: ${toDragonSpeak("Ah delicious $name!. IT'S GOT WHAT ADVENTURERS CRAVE!")}"
+        "Madrigal exclaims: ${toDragonSpeak("Ah delicious $name!. IT'S GOT WHAT ADVENTURERS CRAVE!\n\n")}"
     } else {
-        "Madrigal says: Thanks for the $name."
+        "Madrigal says: Thanks for the $name.\n\n"
     }
     println(phrase)
 }
