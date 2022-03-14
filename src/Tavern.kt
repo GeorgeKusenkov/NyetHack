@@ -1,5 +1,4 @@
 import java.io.File
-import java.util.*
 import kotlin.math.roundToInt
 
 const val TAVERN_NAME = "Taernyl's Folly"
@@ -7,42 +6,59 @@ const val TAVERN_NAME = "Taernyl's Folly"
 var playerGold = 100
 var playerSilver = 10
 
-val patronList = mutableListOf("Eli", "Mordoc", "Sophie")
-val menuList = File ("data/tavern-menu-data.txt")
+val patronList = mutableListOf("Eli", "Mordoc", "Sophie", "Borya", "Sanya")
+val uniquePatrons = mutableSetOf<String>()
+val lastName = listOf("Ironfoot", "Fernsworth", "Baggins")
+val menuList = File("data/tavern-menu-data.txt")
     .readText()
     .split("\n")
 
 fun main()  {
 
-//    if (patronList.contains("Eli")) {
-//        println("The tavern master says: Eli's in the back playing cards.")
-//    } else {
-//        println("The tavern master says: Eli isn't here.")
-//    }
+
+    println("*** Welcome to Taernyl's Folly ***\n")
+
+
+
+    for (menuItem in menuList) {
+        val (_, name, price) = menuItem.split(',')
+        var newName = name.replaceFirstChar { it.uppercaseChar() }
+        val nameLength = newName.length
+        val nameList = mutableListOf<Int>()
+        nameList += nameLength
+        val MAX_LENGHT = 25
+        val dotToAdd = MAX_LENGHT - nameLength
+
+        (0..dotToAdd).forEach {
+            newName += "."
+        }
+
+        println("$newName$price")
+
+    }
+//    val (type, name, price) = tavernMenu.split(',')
 //
-//    if (patronList.containsAll(listOf("Sophie", "Mordoc"))) {
-//        println("The tavern master says: Yea, they're seated by the stew kettle.")
-//    } else {
-//        println("The tavern master says: Nay, they departed hours ago.")
-//    }
+//    println(type)
 
-//    placeOrder("shandy,Dragon's Breath,5.91")
-//    println(patronList.getOrElse(4) { "Unknown Patron" })
-//    placeOrder("elixir,Shirley's Temple,4.12")
+    (0..9).forEach{
+        val first = patronList.shuffled().first()
+        val last = lastName.shuffled().first()
+        val name = "$first $last"
+        uniquePatrons += name
+    }
+//    println(uniquePatrons)
+    println()
 
-    patronList.forEachIndexed { index, patron ->
-        println("Good evening, $patron - you're #${index + 1} in line.")
-//        placeOrder(patron, "shandy,Dragon's Breath,5.91")
-        placeOrder(patron, menuList.shuffled().first())
+    var orderCount = 0
+
+    while (orderCount <= 9) {
+
+        placeOrder(uniquePatrons.shuffled().first(),
+                menuList.shuffled().first())
+        orderCount++
+
     }
 
-    menuList.forEachIndexed { index, data ->
-        println("$index : $data")
-    }
-
-    for (patron in patronList) {
-        println("Good evening, $patron")
-    }
 }
 
 fun performPurchase(price: Double) {
@@ -72,7 +88,6 @@ fun displayBalance() {
     println("Player's purse balance: Gold: $playerGold, Silver: $playerSilver")
 }
 
-
 private fun toDragonSpeak(phrase: String) =
     phrase.replace(Regex("[AEIOUaeiou]")) {
         val charSequence: CharSequence = when (it.value) {
@@ -91,7 +106,6 @@ private fun toDragonSpeak(phrase: String) =
         charSequence
     }
 
-
 private fun placeOrder(patronName: String, menuData: String) {
     val indexOfApostrophe = TAVERN_NAME.indexOf('\'')
     val tavernMaster = TAVERN_NAME.substring(0 until indexOfApostrophe)
@@ -103,11 +117,11 @@ private fun placeOrder(patronName: String, menuData: String) {
     val message = "$patronName buys a $name ($type) for $price."
     println(message)
 
-    performPurchase(price.toDouble())
+//    performPurchase(price.toDouble())
 
     val phrase = if (name == "Dragon's Breath") {
 //        "Madrigal exclaims: ${toDragonSpeak("Ah delicious $name!. IT'S GOT WHAT ADVENTURERS CRAVE!\n\n")}"
-        "$patronName exclaims: ${toDragonSpeak("Ah, delicious $name!")}\n\n"
+        "$patronName exclaims: ${toDragonSpeak("Ah, delicious $name!")}\n"
     } else {
 //        "Madrigal says: Thanks for the $name.\n\n"
         "$patronName says: Thanks for the $name.\n\n"
