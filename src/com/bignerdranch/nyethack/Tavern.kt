@@ -1,5 +1,6 @@
+package com.bignerdranch.nyethack
+
 import java.io.File
-import kotlin.math.roundToInt
 
 const val TAVERN_NAME = "Taernyl's Folly"
 
@@ -13,7 +14,7 @@ val patronGold = mutableMapOf<String, Double>()
 
 fun main()  {
 
-    println("*** Welcome to Taernyl's Folly ***\n")
+//    println("*** Welcome to Taernyl's Folly ***\n")
 
     for (menuItem in menuList) {
         var (_, name, price) = menuItem.split(',')
@@ -28,7 +29,7 @@ fun main()  {
             name += "."
         }
 
-        println("$name$price")
+//        println("$name$price")
 
     }
 
@@ -45,12 +46,13 @@ fun main()  {
 
     var orderCount = 0
     while (orderCount <= 9) {
-        placeOrder(uniquePatrons.shuffled().first(),
+        placeOrder(
+            uniquePatrons.shuffled().first(),
                 menuList.shuffled().first())
         orderCount++
     }
 
-    displayPatronBalances()
+//    com.bignerdranch.nyethack.displayPatronBalances()
 }
 
 fun performPurchase(price: Double, patronName: String) {
@@ -91,7 +93,7 @@ private fun placeOrder(patronName: String, menuData: String) {
     performPurchase(price.toDouble(), patronName)
 
     val phrase = if (name == "Dragon's Breath") {
-//        "Madrigal exclaims: ${toDragonSpeak("Ah delicious $name!. IT'S GOT WHAT ADVENTURERS CRAVE!\n\n")}"
+//        "Madrigal exclaims: ${com.bignerdranch.nyethack.toDragonSpeak("Ah delicious $name!. IT'S GOT WHAT ADVENTURERS CRAVE!\n\n")}"
         "$patronName exclaims: ${toDragonSpeak("Ah, delicious $name!")}\n"
     } else {
 //        "Madrigal says: Thanks for the $name.\n\n"
