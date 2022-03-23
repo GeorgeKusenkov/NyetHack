@@ -9,9 +9,11 @@ fun main(args: Array<String>) {
 
     val auraColor = player.auraColor(true)
 
-    printPlayerStatus(player)
-    printPlayerStatus(player2)
-    printPlayerStatus(player3)
+    val currentRoom: Room = Plaza()
+
+    println(currentRoom.description())
+    println(currentRoom.load())
+
 
 }
 

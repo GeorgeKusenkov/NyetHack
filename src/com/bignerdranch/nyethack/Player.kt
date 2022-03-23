@@ -7,6 +7,7 @@ class Player(_name: String,
              var healthPoints: Int = 100,
              val isBlessed: Boolean,
              private val isImmortal: Boolean) {
+
         var name = _name
             get() = "${field.replaceFirstChar { if (it.isLowerCase()) it.titlecase(Locale.getDefault()) else it.toString() }} of $hometown"
             private set(value) {
